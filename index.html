@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#101827" />
+  <meta name="description" content="Origopedia — jelajahi sejarah dunia, perkembangan peradaban, dan sejarah kelam melalui artikel interaktif." />
+  <title>Origopedia — Jelajahi Sejarah Dunia</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Origopedia beranda">
+      <span class="brand-mark">O</span>
+      <span>ORIGO<span class="brand-light">PEDIA</span></span>
+    </a>
+    <button class="mobile-menu-btn icon-btn" id="mobileMenuBtn" aria-label="Buka navigasi" aria-expanded="false">☰</button>
+    <nav class="main-nav" id="mainNav">
+      <a href="#explore">Jelajahi</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#map-section">Peta Sejarah</a>
+      <a href="#dark-history">Dark History</a>
+    </nav>
+    <div class="top-actions">
+      <button class="icon-btn" id="themeToggle" aria-label="Ganti tema" title="Ganti tema">☼</button>
+      <a class="nav-cta" href="#explore">Mulai membaca <span>↗</span></a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-orbit orbit-one"></div>
+      <div class="hero-orbit orbit-two"></div>
+      <div class="hero-content">
+        <div class="eyebrow"><span class="eyebrow-dot"></span> ENSIKLOPEDIA SEJARAH INTERAKTIF</div>
+        <h1>Memahami masa lalu.<br /><span>Menjelaskan dunia.</span></h1>
+        <p class="hero-copy">Jelajahi peradaban, gagasan, bisnis, dan peristiwa yang membentuk kehidupan manusia hari ini.</p>
+        <form class="search-form" id="searchForm" role="search">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input id="searchInput" type="search" placeholder="Cari tokoh, peristiwa, peradaban..." aria-label="Cari sejarah" autocomplete="off" />
+          <button type="submit">Cari <span>→</span></button>
+        </form>
+        <div class="popular-searches">
+          <span>Populer:</span>
+          <button class="search-chip" data-search="romawi">Romawi</button>
+          <button class="search-chip" data-search="jalur rempah">Jalur rempah</button>
+          <button class="search-chip" data-search="revolusi industri">Revolusi Industri</button>
+        </div>
+      </div>
+      <div class="hero-art" aria-label="Ilustrasi garis waktu sejarah">
+        <div class="art-glow"></div>
+        <div class="planet planet-large"></div>
+        <div class="planet planet-small"></div>
+        <div class="art-ring ring-a"></div>
+        <div class="art-ring ring-b"></div>
+        <div class="art-label label-top"><span class="label-dot gold"></span> JEJAK PERADABAN</div>
+        <div class="art-label label-bottom"><span class="label-dot blue"></span> MASA LALU · MASA KINI</div>
+        <div class="year-stamp">HISTORY<br /><strong>∞</strong></div>
+      </div>
+      <div class="hero-footer">
+        <div><strong>01</strong><span>Temukan kisah</span></div>
+        <div><strong>02</strong><span>Telusuri bukti</span></div>
+        <div><strong>03</strong><span>Hubungkan peristiwa</span></div>
+      </div>
+    </section>
+
+    <section class="section section-tight" id="explore">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">PERPUSTAKAAN PENGETAHUAN</p>
+          <h2>Jelajahi sejarah</h2>
+          <p class="section-description">Pilih topik, temukan konteks, lalu ikuti jejaknya.</p>
+        </div>
+        <span class="result-count" id="resultCount">6 artikel</span>
+      </div>
+      <div class="filter-row" id="categoryFilters" aria-label="Filter kategori">
+        <button class="filter-btn active" data-category="all">Semua topik</button>
+        <button class="filter-btn" data-category="civilization">Peradaban</button>
+        <button class="filter-btn" data-category="business">Sejarah bisnis</button>
+        <button class="filter-btn" data-category="science">Sains & teknologi</button>
+        <button class="filter-btn" data-category="dark">Dark History</button>
+      </div>
+      <div class="article-grid" id="articleGrid" aria-live="polite"></div>
+      <div class="empty-state hidden" id="emptyState">
+        <span class="empty-icon">⌕</span>
+        <h3>Belum ada artikel yang cocok</h3>
+        <p>Coba kata kunci atau kategori yang berbeda.</p>
+        <button class="button-secondary" id="resetSearch">Tampilkan semua artikel</button>
+      </div>
+    </section>
+
+    <section class="timeline-section" id="timeline">
+      <div class="timeline-layout">
+        <div class="timeline-intro">
+          <p class="section-kicker">SEJARAH DALAM WAKTU</p>
+          <h2>Setiap zaman<br />meninggalkan jejak.</h2>
+          <p>Geser periode waktu dan pilih peristiwa untuk membaca ringkasan serta melihat keterkaitannya.</p>
+          <div class="timeline-controls">
+            <button class="round-btn" id="timelinePrev" aria-label="Peristiwa sebelumnya">←</button>
+            <button class="round-btn" id="timelineNext" aria-label="Peristiwa berikutnya">→</button>
+            <span id="timelinePosition">01 / 06</span>
+          </div>
+        </div>
+        <div class="timeline-explorer">
+          <div class="timeline-line"></div>
+          <div class="timeline-events" id="timelineEvents"></div>
+          <article class="timeline-detail" id="timelineDetail">
+            <span class="detail-label">PERISTIWA TERPILIH</span>
+            <h3>Pilih peristiwa pada garis waktu</h3>
+            <p>Ringkasan sejarah akan tampil di sini.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section map-section" id="map-section">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">SEJARAH BERDASARKAN LOKASI</p>
+          <h2>Dunia adalah arsip.</h2>
+          <p class="section-description">Pilih titik lokasi untuk melihat kisah sejarah yang terhubung dengannya.</p>
+        </div>
+        <span class="map-tag"><span class="live-dot"></span> PETA DEMO</span>
+      </div>
+      <div class="map-card">
+        <div class="map-illustration" id="mapIllustration">
+          <div class="map-grid"></div>
+          <svg class="world-shapes" viewBox="0 0 900 440" role="img" aria-label="Ilustrasi abstrak peta dunia">
+            <path d="M94 105 L139 65 194 72 218 102 203 128 165 143 151 180 123 174 112 143 80 133Z"/>
+            <path d="M194 191 L226 204 242 244 230 284 213 325 192 305 181 264 168 229Z"/>
+            <path d="M352 100 L390 80 425 94 438 117 418 133 387 126 371 148 343 132Z"/>
+            <path d="M386 150 L430 139 460 161 455 205 432 245 408 278 389 246 377 207 360 178Z"/>
+            <path d="M443 95 L490 72 552 78 584 101 623 105 661 133 647 157 602 161 577 181 548 166 520 180 488 155 459 141Z"/>
+            <path d="M539 184 L568 190 589 221 578 251 558 273 537 246 527 216Z"/>
+            <path d="M654 280 L694 268 730 286 722 311 681 322 653 304Z"/>
+            <path d="M713 105 L741 97 758 113 748 135 722 137 705 121Z"/>
+          </svg>
+          <div class="map-pins" id="mapPins"></div>
+          <div class="map-caption"><span class="map-caption-mark">◎</span><span><strong>Jelajahi peta sejarah</strong><small>Pilih penanda untuk membuka kisah</small></span></div>
+        </div>
+        <aside class="map-info" id="mapInfo">
+          <div class="map-info-top"><span class="mini-label">LOKASI PILIHAN</span><span class="pin-number">01</span></div>
+          <h3>Pusat-pusat peradaban</h3>
+          <p>Peta ini adalah ilustrasi antarmuka. Lokasi dan data pada versi demo belum dimaksudkan sebagai peta geografis presisi.</p>
+          <div class="map-info-divider"></div>
+          <div class="map-stat"><span>Wilayah</span><strong id="mapRegion">Dunia</strong></div>
+          <div class="map-stat"><span>Periode</span><strong id="mapPeriod">Beragam zaman</strong></div>
+          <button class="button-primary full-width" id="mapReadMore">Jelajahi artikel <span>→</span></button>
+        </aside>
+      </div>
+    </section>
+
+    <section class="dark-history-section" id="dark-history">
+      <div class="dark-visual">
+        <div class="dark-grid"></div>
+        <div class="dark-orb"></div>
+        <div class="dark-stamp">ARCHIVE<br /><span>DH / 01</span></div>
+        <div class="dark-visual-caption">MEMAHAMI BUKAN MEMBENARKAN</div>
+      </div>
+      <div class="dark-content">
+        <p class="section-kicker">KOLEKSI KHUSUS · DARK HISTORY</p>
+        <h2>Sisi sejarah yang<br /><span>tak boleh dilupakan.</span></h2>
+        <p>Telusuri peristiwa kelam melalui sumber, konteks, dan dampaknya terhadap manusia. Bukan untuk sensasi, melainkan untuk memahami bagaimana sejarah terjadi dan apa yang dapat dipelajari darinya.</p>
+        <div class="dark-principles">
+          <div><span>01</span><strong>Berbasis sumber</strong></div>
+          <div><span>02</span><strong>Mengutamakan konteks</strong></div>
+          <div><span>03</span><strong>Menghormati korban</strong></div>
+        </div>
+        <button class="button-dark" id="darkHistoryBtn">Jelajahi koleksi <span>↗</span></button>
+      </div>
+    </section>
+
+    <section class="section business-section" id="for-institutions">
+      <div class="business-copy">
+        <p class="section-kicker">UNTUK PENDIDIK & INSTITUSI</p>
+        <h2>Pengetahuan yang<br />bisa diintegrasikan.</h2>
+        <p>Origopedia dirancang untuk berkembang menjadi sumber data dan materi pembelajaran bagi sekolah, museum, peneliti, serta kreator konten.</p>
+      </div>
+      <div class="business-features">
+        <div class="business-feature"><span class="feature-icon">⌘</span><div><strong>Historical API</strong><p>Integrasikan data sejarah ke produk digital.</p></div><span class="feature-arrow">↗</span></div>
+        <div class="business-feature"><span class="feature-icon">▤</span><div><strong>Modul pembelajaran</strong><p>Materi terstruktur untuk kelas dan LMS.</p></div><span class="feature-arrow">↗</span></div>
+        <div class="business-feature"><span class="feature-icon">◷</span><div><strong>Timeline & peta</strong><p>Visualisasi untuk situs dan pameran digital.</p></div><span class="feature-arrow">↗</span></div>
+        <p class="business-note">Konsep layanan institusi — integrasi API belum aktif di versi demo.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <a class="brand footer-brand" href="#"><span class="brand-mark">O</span><span>ORIGO<span class="brand-light">PEDIA</span></span></a>
+    <p>Pengetahuan masa lalu, untuk memahami masa kini.</p>
+    <div class="footer-bottom"><span>© <span id="currentYear"></span> Origopedia</span><span>Versi demo · Konten contoh untuk prototipe</span><a href="#top" id="backToTop">Kembali ke atas ↑</a></div>
+  </footer>
+
+  <dialog class="article-dialog" id="articleDialog">
+    <button class="dialog-close icon-btn" id="dialogClose" aria-label="Tutup artikel">×</button>
+    <div id="dialogContent"></div>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
