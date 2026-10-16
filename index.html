@@ -7,6 +7,7 @@
   <meta name="description" content="Origopedia — jelajahi sejarah dunia, perkembangan peradaban, dan sejarah kelam melalui artikel interaktif." />
   <title>Origopedia — Jelajahi Sejarah Dunia</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="article-library.css" />
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -88,6 +89,39 @@
         <p>Coba kata kunci atau kategori yang berbeda.</p>
         <button class="button-secondary" id="resetSearch">Tampilkan semua artikel</button>
       </div>
+    </section>
+
+
+
+    <!-- PUSTAKA ARTIKEL TAMBAHAN -->
+    <section class="section" id="op-article-library">
+      <div class="section-heading">
+        <p class="eyebrow">PERPUSTAKAAN</p>
+        <h2 class="op-library-heading">Artikel Tambahan Origopedia</h2>
+        <p class="op-library-intro">Jelajahi sejarah dunia, sejarah Indonesia, ekonomi, dan peristiwa penting yang membentuk kehidupan manusia.</p>
+      </div>
+
+      <div class="op-article-controls">
+        <input id="op-article-search" type="search" placeholder="Cari artikel..." aria-label="Cari artikel" />
+        <select id="op-article-category" aria-label="Pilih kategori">
+          <option value="all">Semua kategori</option>
+          <option value="world-history">Sejarah Dunia</option>
+          <option value="indonesia">Sejarah Indonesia</option>
+          <option value="economics">Ekonomi</option>
+          <option value="dark-history">Dark History</option>
+        </select>
+      </div>
+      <p id="op-article-count" aria-live="polite"></p>
+      <div id="op-article-grid"></div>
+      <p id="op-article-empty" hidden>Artikel tidak ditemukan. Coba kata kunci lain.</p>
+
+      <dialog id="op-article-dialog" aria-labelledby="op-article-dialog-title">
+        <button id="op-article-dialog-close" type="button" aria-label="Tutup artikel">Tutup</button>
+        <h2 id="op-article-dialog-title"></h2>
+        <p id="op-article-dialog-meta"></p>
+        <div id="op-article-dialog-body"></div>
+        <div id="op-article-dialog-sources"></div>
+      </dialog>
     </section>
 
     <section class="timeline-section" id="timeline">
@@ -197,5 +231,10 @@
     <div id="dialogContent"></div>
   </dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- app.js lama tetap dipakai; modul artikel tambahan dimuat setelahnya. -->
+  <script src="articles.js"></script>
+  <script src="article-library.js"></script>
 </body>
-</html>
+  </html>
+                                                                                                                                                 
