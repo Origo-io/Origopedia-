@@ -8,6 +8,7 @@
   <title>Origopedia — Jelajahi Sejarah Dunia</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="article-library.css" />
+  <link rel="stylesheet" href="quiz.css" />
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -21,6 +22,7 @@
       <a href="#explore">Jelajahi</a>
       <a href="#timeline">Timeline</a>
       <a href="#map-section">Peta Sejarah</a>
+      <a href="#op-quiz">Kuis</a>
       <a href="#dark-history">Dark History</a>
     </nav>
     <div class="top-actions">
@@ -122,6 +124,62 @@
         <div id="op-article-dialog-body"></div>
         <div id="op-article-dialog-sources"></div>
       </dialog>
+    </section>
+
+    <section class="section" id="op-quiz">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">BELAJAR SAMBIL BERMAIN</p>
+          <h2>Chapter 1: Peradaban Romawi</h2>
+          <p class="section-description">Jawab 40 pertanyaan, kumpulkan XP, dan pelajari penjelasan setelah setiap jawaban. Kamu punya 3 nyawa; setiap jawaban salah mengurangi 1 nyawa.</p>
+        </div>
+        <span class="result-count">40 soal</span>
+      </div>
+
+      <div class="op-quiz-shell">
+        <div class="op-quiz-card">
+          <div id="op-quiz-body">
+            <div class="op-quiz-topline">
+              <span id="op-quiz-progress-text">Soal 1 dari 40</span>
+              <div class="op-quiz-topline-stats">
+                <span class="op-quiz-lives" id="op-quiz-lives" role="status" aria-live="polite" aria-label="3 nyawa tersisa">❤️ ❤️ ❤️</span>
+                <span class="op-quiz-xp">✦ <span id="op-quiz-score">0</span> XP</span>
+              </div>
+            </div>
+            <div class="op-quiz-progress-track" role="progressbar" aria-label="Kemajuan kuis" aria-valuemin="0" aria-valuemax="40">
+              <div class="op-quiz-progress-bar" id="op-quiz-progress"></div>
+            </div>
+            <h3 id="op-quiz-question" tabindex="-1">Memuat pertanyaan…</h3>
+            <div class="op-quiz-options" id="op-quiz-options"></div>
+            <div class="op-quiz-feedback" id="op-quiz-feedback" role="status" aria-live="polite" hidden></div>
+            <div class="op-quiz-actions">
+              <button class="op-quiz-primary" id="op-quiz-next" type="button" disabled>Lanjut →</button>
+            </div>
+          </div>
+          <div class="op-quiz-result" id="op-quiz-result" hidden>
+            <div class="op-quiz-result-icon" aria-hidden="true">🏛️</div>
+            <h3>Chapter selesai!</h3>
+            <p id="op-quiz-result-message">Kamu sudah menyelesaikan chapter Romawi.</p>
+            <div class="op-quiz-result-stats">
+              <div class="op-quiz-result-stat"><strong id="op-quiz-result-score">0</strong><span>Total XP</span></div>
+              <div class="op-quiz-result-stat"><strong id="op-quiz-result-correct">0 dari 40</strong><span>Jawaban benar</span></div>
+              <div class="op-quiz-result-stat"><strong id="op-quiz-result-percent">0%</strong><span>Akurasi</span></div>
+            </div>
+            <button class="op-quiz-primary" id="op-quiz-restart" type="button">Ulangi chapter ↻</button>
+          </div>
+        </div>
+
+        <aside class="op-quiz-side">
+          <h3>📚 Misi chapter</h3>
+          <p>Pelajari dasar sejarah Romawi dari Republik hingga perubahan Kekaisaran.</p>
+          <div class="op-quiz-stat"><span>Jumlah soal</span><strong>40</strong></div>
+          <div class="op-quiz-stat"><span>Nyawa awal</span><strong>❤️ 3</strong></div>
+          <div class="op-quiz-stat"><span>XP per jawaban benar</span><strong>10</strong></div>
+          <div class="op-quiz-stat"><span>Rekor XP kamu</span><strong id="op-quiz-best">0</strong></div>
+          <div class="op-quiz-note">Tips: baca penjelasan setelah menjawab. Lima soal terakhir bertema nyeleneh—itu bonus humor modern, bukan peristiwa sejarah sungguhan.</div>
+          <div class="op-quiz-bonus">🎭 <strong>5 soal bonus kocak</strong><br />Termasuk apakah bangsa Romawi pernah naik KRL. Tenang, jawabannya tetap mengikuti fakta sejarah!</div>
+        </aside>
+      </div>
     </section>
 
     <section class="timeline-section" id="timeline">
@@ -235,6 +293,6 @@
   <!-- app.js lama tetap dipakai; modul artikel tambahan dimuat setelahnya. -->
   <script src="articles.js"></script>
   <script src="article-library.js"></script>
+  <script src="quiz.js"></script>
 </body>
-  </html>
-                                                                                                                                                 
+</html>
