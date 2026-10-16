@@ -50,16 +50,16 @@ const articles = [
 ];
 
 const timelineData = [
-  { year: "c. 3000 SM", title: "Kota dan tulisan awal", place: "Mesopotamia", detail: "Di sejumlah masyarakat Mesopotamia, kota, administrasi, dan sistem tulisan berkembang dalam hubungan dengan perdagangan, pemerintahan, dan pengelolaan sumber daya." },
-  { year: "27 SM", title: "Awal Kekaisaran Romawi", place: "Roma", detail: "Pemerintahan Augustus menandai awal periode kekaisaran Romawi dalam historiografi tradisional, setelah konflik politik pada akhir Republik." },
-  { year: "Abad ke-7", title: "Jaringan perdagangan meluas", place: "Asia dan Samudra Hindia", detail: "Jaringan pelayaran dan perdagangan di Samudra Hindia menghubungkan berbagai pelabuhan, komunitas, barang, dan gagasan. Perubahan berlangsung bertahap dan lintas wilayah." },
-  { year: "Abad ke-15", title: "Perubahan teknologi cetak", place: "Eropa dan Asia", detail: "Teknik cetak berkembang melalui sejarah yang berbeda di berbagai wilayah. Di Eropa, mesin cetak huruf logam bergerak membantu memperbesar produksi buku." },
-  { year: "Abad ke-18", title: "Revolusi Industri", place: "Britania", detail: "Produksi mekanis dan sistem pabrik berkembang melalui kombinasi energi, pengetahuan, modal, tenaga kerja, dan institusi. Perubahan ini kemudian menyebar secara tidak seragam." },
-  { year: "1945", title: "Tatanan dunia pascaperang", place: "Global", detail: "Berakhirnya Perang Dunia II mengubah hubungan internasional, mempercepat pembentukan lembaga multilateral, dan membuka periode dekolonisasi yang berlangsung dengan jalur berbeda." }
+  { year: "c. 3000 SM", title: "Kota dan tulisan awal", place: "Mesopotamia", detail: "Di sejumlah masyarakat Mesopotamia, kota, administrasi, dan sistem tulisan berkembang dalam hubungan dengan perdagangan, pemerintahan, dan pengelolaan sumber daya.", articleId: null },
+  { year: "27 SM", title: "Awal Kekaisaran Romawi", place: "Roma", detail: "Pemerintahan Augustus menandai awal periode kekaisaran Romawi dalam historiografi tradisional, setelah konflik politik pada akhir Republik.", articleId: "rome" },
+  { year: "Abad ke-7", title: "Jaringan perdagangan meluas", place: "Asia dan Samudra Hindia", detail: "Jaringan pelayaran dan perdagangan di Samudra Hindia menghubungkan berbagai pelabuhan, komunitas, barang, dan gagasan. Perubahan berlangsung bertahap dan lintas wilayah.", articleId: "silk-road" },
+  { year: "Abad ke-15", title: "Perubahan teknologi cetak", place: "Eropa dan Asia", detail: "Teknik cetak berkembang melalui sejarah yang berbeda di berbagai wilayah. Di Eropa, mesin cetak huruf logam bergerak membantu memperbesar produksi buku.", articleId: "printing" },
+  { year: "Abad ke-18", title: "Revolusi Industri", place: "Britania", detail: "Produksi mekanis dan sistem pabrik berkembang melalui kombinasi energi, pengetahuan, modal, tenaga kerja, dan institusi. Perubahan ini kemudian menyebar secara tidak seragam.", articleId: "industrial-revolution" },
+  { year: "1945", title: "Tatanan dunia pascaperang", place: "Global", detail: "Berakhirnya Perang Dunia II mengubah hubungan internasional, mempercepat pembentukan lembaga multilateral, dan membuka periode dekolonisasi yang berlangsung dengan jalur berbeda.", articleId: null }
 ];
 
 const mapLocations = [
-  { id: "mesopotamia", name: "Mesopotamia", region: "Asia Barat", period: "Peradaban awal", x: 58, y: 37, article: "alexandria", detail: "Kawasan antara sungai Tigris dan Efrat menjadi salah satu pusat awal kota dan administrasi." },
+  { id: "mesopotamia", name: "Mesopotamia", region: "Asia Barat", period: "Peradaban awal", x: 58, y: 37, article: "", detail: "Kawasan antara sungai Tigris dan Efrat menjadi salah satu pusat awal kota dan administrasi." },
   { id: "rome", name: "Roma", region: "Eropa Selatan", period: "Zaman Kuno", x: 48, y: 35, article: "rome", detail: "Roma berkembang dari kota di Italia menjadi pusat kekuasaan regional dan kekaisaran." },
   { id: "alexandria", name: "Alexandria", region: "Afrika Utara", period: "Zaman Helenistik", x: 51, y: 43, article: "alexandria", detail: "Alexandria dikenal sebagai pusat perdagangan dan pembelajaran di pesisir Mediterania." },
   { id: "maluku", name: "Kepulauan Maluku", region: "Asia Tenggara", period: "Jaringan perdagangan maritim", x: 78, y: 58, article: "silk-road", detail: "Kepulauan Maluku merupakan sumber penting cengkih dan pala dalam sejarah perdagangan global." },
@@ -145,10 +145,18 @@ function renderTimeline() {
   `).join("");
 
   const event = timelineData[currentTimelineIndex];
+  const relatedArticle = event.articleId
+    ? articles.find(article => article.id === event.articleId)
+    : null;
+
   $("#timelineDetail").innerHTML = `
     <span class="detail-label">PERISTIWA TERPILIH · ${escapeHTML(event.year.toUpperCase())}</span>
     <h3>${escapeHTML(event.title)}</h3>
     <p>${escapeHTML(event.detail)}</p>
+    ${relatedArticle
+      ? `<button type="button" class="read-link" data-timeline-article="${escapeHTML(relatedArticle.id)}">Baca artikel terkait →</button>`
+      : `<p class="timeline-note">Artikel terkait akan segera ditambahkan.</p>`
+    }
   `;
   $("#timelinePosition").textContent = `${String(currentTimelineIndex + 1).padStart(2, "0")} / ${String(timelineData.length).padStart(2, "0")}`;
 }
@@ -230,6 +238,11 @@ $("#timelineEvents").addEventListener("click", event => {
   currentTimelineIndex = Number(button.dataset.timeline);
   renderTimeline();
 });
+$("#timelineDetail").addEventListener("click", event => {
+  const button = event.target.closest("[data-timeline-article]");
+  if (!button) return;
+  openArticle(button.dataset.timelineArticle);
+});
 $("#timelinePrev").addEventListener("click", () => {
   currentTimelineIndex = (currentTimelineIndex - 1 + timelineData.length) % timelineData.length;
   renderTimeline();
@@ -245,7 +258,11 @@ $("#mapPins").addEventListener("click", event => {
   currentMapLocation = mapLocations.find(location => location.id === button.dataset.location) || mapLocations[0];
   renderMapPins();
 });
-$("#mapReadMore").addEventListener("click", event => openArticle(event.currentTarget.dataset.article));
+$("#mapReadMore").addEventListener("click", event => {
+  const articleId = event.currentTarget.dataset.article;
+  if (articleId) openArticle(articleId);
+  else showToast("Artikel untuk lokasi ini akan segera ditambahkan.");
+});
 $("#darkHistoryBtn").addEventListener("click", () => {
   selectCategory("dark");
   $("#explore").scrollIntoView({ behavior: "smooth" });
