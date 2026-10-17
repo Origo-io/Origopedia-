@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="article-library.css" />
   <link rel="stylesheet" href="quiz.css" />
   <link rel="stylesheet" href="historical-atlas.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -68,7 +69,7 @@
       </div>
     </section>
 
-    <section class="section section-tight" id="explore">
+    <section class="section section-tight" id="legacy-explore" hidden aria-hidden="true">
       <div class="section-heading">
         <div>
           <p class="section-kicker">PERPUSTAKAAN PENGETAHUAN</p>
@@ -96,20 +97,20 @@
 
 
     <!-- PUSTAKA ARTIKEL TAMBAHAN -->
-    <section class="section" id="op-article-library">
+    <section class="section op-article-library" id="explore">
       <div class="section-heading">
         <p class="eyebrow">PERPUSTAKAAN</p>
-        <div class="op-library-title-row"><div><h2 class="op-library-heading">Artikel Origopedia</h2><p class="op-library-intro">Pilih artikel untuk membaca ringkasan dan sumber lanjutannya.</p></div><button class="op-article-menu-toggle" id="op-article-menu-toggle" type="button" aria-expanded="true" aria-controls="op-article-content"><span aria-hidden="true">☰</span><span>Daftar artikel</span></button></div>
+        <div class="op-library-title-row"><div><h2 class="op-library-heading">Artikel Origopedia</h2><p class="op-library-intro">Pilih artikel untuk membaca ringkasan dan sumber lanjutannya.</p></div><button class="op-article-menu-toggle" id="op-article-menu-toggle" type="button" aria-expanded="false" aria-controls="op-article-content"><span aria-hidden="true">☰</span><span>Daftar artikel</span></button></div>
       </div>
 
-      <div id="op-article-content">
+      <div id="op-article-content" hidden>
       <div class="op-article-controls">
         <input id="op-article-search" type="search" placeholder="Cari artikel..." aria-label="Cari artikel" />
         <select id="op-article-category" aria-label="Pilih kategori">
-          <option value="all">Semua kategori</option>
+          <option value="all">Semua artikel</option>
           <option value="world-history">Sejarah Dunia</option>
           <option value="indonesia">Sejarah Indonesia</option>
-          <option value="economics">Ekonomi</option>
+          <option value="economics">Sejarah Ekonomi</option>
           <option value="dark-history">Dark History</option>
         </select>
       </div>
@@ -232,8 +233,9 @@
         </div>
 
         <div class="atlas-map-card">
-          <div class="atlas-map-topline"><span>🌍 PETA DUNIA SKEMATIS</span><span id="atlasEntityCount">Memuat data…</span></div>
+          <div class="atlas-map-topline"><span>🌍 PETA DUNIA INTERAKTIF</span><span id="atlasEntityCount">Memuat data…</span></div>
           <div class="atlas-map-canvas" id="atlasMapCanvas">
+            <div id="atlasLeafletMap" class="atlas-leaflet-map" hidden role="application" aria-label="Peta dunia dengan lapisan batas negara modern dan marker sejarah"></div>
             <svg class="atlas-world-svg" viewBox="0 0 1000 500" role="img" aria-label="Ilustrasi skematis benua-benua dunia">
               <path class="atlas-continent" d="M75 105 L120 62 190 48 246 72 274 112 242 146 210 158 190 199 153 207 126 177 91 159Z" />
               <path class="atlas-continent" d="M220 224 L260 236 282 282 269 333 246 390 222 365 210 319 190 273Z" />
@@ -247,7 +249,7 @@
             </svg>
             <div class="atlas-map-markers" id="atlasMapMarkers"></div>
           </div>
-          <p class="atlas-map-note">Catatan: marker menunjukkan lokasi perkiraan pusat/wilayah utama, bukan garis batas wilayah yang akurat. Batas politik historis berubah-ubah dan akan ditambahkan setelah data poligon yang dapat diverifikasi tersedia.</p>
+          <p class="atlas-map-note">Catatan: peta dasar menampilkan geografi dan batas negara modern untuk orientasi. Marker menunjukkan lokasi pusat atau kawasan perkiraan entitas sejarah, bukan batas wilayah kerajaan pada abad terpilih. Batas historis yang akurat membutuhkan data poligon khusus tiap periode.</p>
         </div>
 
         <div class="atlas-results-heading">
@@ -316,6 +318,7 @@
   <script src="article-library.js"></script>
   <script src="quiz.js"></script>
   <script src="quiz-chapter2.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="historical-atlas.js"></script>
 </body>
 </html>
