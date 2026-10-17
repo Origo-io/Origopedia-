@@ -227,4 +227,146 @@
           const y = Number.isFinite(item.lat) ? ((90 - item.lat) / 180) * 100 : 50;
           entities.push({ ...item, x, y });
           if (Number.isFinite(item.lat) && Number.isFinite(item.lon)) coordinates[item.id] = [item.lat, item.lon];
-   
+        });
+      })
+      .catch(error => console.warn("Origopedia: data tambahan kerajaan belum dimuat.", error));
+  }
+
+  const centuryYearRange = century => {
+    if (century === 21) return "2001鈥�2100 M";
+    const start = (century - 1) * 100 + 1;
+    const end = century * 100;
+    return `${start}鈥�${end} M`;
+  };
+
+  function getEntitiesForCentury(century) {
+    return entities.filter(item => item.start <= century && item.end >= century);
+  }
+
+  function renderAtlas() {
+    selectedCentury = Number(range.value);
+    const yearRange = centuryYearRange(selectedCentury);
+    $("atlasCenturyTitle").textContent = `Abad ke-${selectedCentury}`;
+    $("atlasYearRange").textContent = yearRange;
+    $("atlasListTitle").textContent = `Kerajaan dan negara pada abad ke-${selectedCentury}`;
+    const items = getEntitiesForCentury(selectedCentury);
+    $("atlasEntityCount").textContent = `${items.length} contoh entitas`;
+    $("atlasResultsCount").textContent = `${items.length} entitas`;
+    $("atlasEmpty").hidden = items.length !== 0;
+    $("atlasEntityGrid").innerHTML = items.map(item => `
+      <button type="button" class="atlas-entity-card ${selectedEntity && selectedEntity.id === item.id ? "active" : ""}" data-atlas-entity="${item.id}">
+        <span class="atlas-entity-type">${item.type}</span>
+        <strong>${item.name}</strong>
+        <span>${item.region}</span>
+        <small>Perkiraan periode: abad ${item.start}鈥�${item.end}</small>
+      </button>
+    `).join("");
+    if (hasDetailedMap && leafletMap) {
+      leafletMarkers.forEach(marker => marker.remove());
+      leafletMarkers = items.map((item, index) => {
+        const point = coordinates[item.id];
+        if (!point) return null;
+        const icon = window.L.divIcon({
+          className: "atlas-leaflet-icon",
+          html: `<span class="atlas-leaflet-marker ${selectedEntity && selectedEntity.id === item.id ? "active" : ""}">${index + 1}</span>`,
+          iconSize: [30, 30],
+          iconAnchor: [15, 15]
+        });
+        const marker = window.L.marker(point, { icon, title: item.name, keyboard: true }).addTo(leafletMap);
+        marker.bindTooltip(item.name, { direction: "top", offset: [0, -12] });
+        marker.on("click", () => {
+          renderDetail(item);
+          const card = document.querySelector(`.atlas-entity-card[data-atlas-entity="${item.id}"]`);
+          if (card) card.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        });
+        return marker;
+      }).filter(Boolean);
+    } else {
+      $("atlasMapMarkers").innerHTML = items.map((item, index) => `
+        <button type="button" class="atlas-marker ${selectedEntity && selectedEntity.id === item.id ? "active" : ""}" style="left:${item.x}%;top:${item.y}%" data-atlas-entity="${item.id}" aria-label="Pilih ${item.name}" title="${item.name}"><span>${index + 1}</span></button>
+      `).join("");
+    }
+    if (hasDetailedMap && leafletMap) loadHistoricalBorders(selectedCentury);
+    if (selectedEntity && !items.some(item => item.id === selectedEntity.id)) selectedEntity = null;
+    if (!selectedEntity && items.length) selectedEntity = items[0];
+    if (selectedEntity) renderDetail(selectedEntity);
+    else {
+      $("atlasDetail").innerHTML = '<span class="atlas-detail-kicker">DATA BELUM TERSEDIA</span><h3>Belum ada entitas pada abad ini</h3><p>Data bisa ditambahkan melalui berkas historical-atlas.js.</p>';
+    }
+    // Reapply marker/card selection after the lists are refreshed.
+    if (selectedEntity) setSelectedVisual(selectedEntity.id);
+  }
+
+  function renderDetail(item) {
+    selectedEntity = item;
+    $("atlasDetail").innerHTML = `
+      <span class="atlas-detail-kicker">${item.type} 路 ${item.region}</span>
+      <h3>${item.name}</h3>
+      <p>${item.description}</p>
+      <div class="atlas-detail-meta"><span>Perkiraan periode</span><strong>Abad ${item.start}鈥�${item.end}</strong></div>
+      ${item.articleId ? `<button type="button" class="atlas-article-button" data-atlas-article="${item.articleId}">Baca artikel terkait 鈫�</button>` : `<p class="atlas-no-article">Artikel khusus untuk entitas ini belum tersedia.</p>`}
+    `;
+    setSelectedVisual(item.id);
+  }
+
+  function setSelectedVisual(id) {
+    document.querySelectorAll("[data-atlas-entity]").forEach(node => {
+      const active = node.dataset.atlasEntity === id;
+      node.classList.toggle("active", active);
+      if (node.classList.contains("atlas-marker")) node.setAttribute("aria-pressed", String(active));
+    });
+    if (hasDetailedMap && leafletMap) {
+      leafletMarkers.forEach((marker, index) => {
+        const item = getEntitiesForCentury(selectedCentury)[index];
+        if (!item) return;
+        marker.setIcon(window.L.divIcon({
+          className: "atlas-leaflet-icon",
+          html: `<span class="atlas-leaflet-marker ${item.id === id ? "active" : ""}">${index + 1}</span>`,
+          iconSize: [30, 30], iconAnchor: [15, 15]
+        }));
+      });
+    }
+  }
+
+  $("atlasPrev").addEventListener("click", () => { range.value = String(Math.max(1, Number(range.value) - 1)); renderAtlas(); });
+  $("atlasNext").addEventListener("click", () => { range.value = String(Math.min(21, Number(range.value) + 1)); renderAtlas(); });
+  range.addEventListener("input", renderAtlas);
+  $("atlasEntityGrid").addEventListener("click", event => {
+    const button = event.target.closest("[data-atlas-entity]");
+    if (!button) return;
+    const item = entities.find(entity => entity.id === button.dataset.atlasEntity);
+    if (item) renderDetail(item);
+  });
+  $("atlasMapMarkers").addEventListener("click", event => {
+    const button = event.target.closest("[data-atlas-entity]");
+    if (!button) return;
+    const item = entities.find(entity => entity.id === button.dataset.atlasEntity);
+    if (item) {
+      renderDetail(item);
+      const card = document.querySelector(`.atlas-entity-card[data-atlas-entity="${item.id}"]`);
+      if (card) card.scrollIntoView({block:"nearest",behavior:"smooth"});
+    }
+  });
+  $("atlasDetail").addEventListener("click", event => {
+    const button = event.target.closest("[data-atlas-article]");
+    if (!button) return;
+    const id = button.dataset.atlasArticle;
+    if (typeof window.openArticle === "function") {
+      window.openArticle(id);
+    } else {
+      const search = document.getElementById("searchInput");
+      const form = document.getElementById("searchForm");
+      if (search && form) {
+        const item = entities.find(entity => entity.articleId === id);
+        search.value = item ? item.name : id;
+        form.dispatchEvent(new Event("submit", {bubbles:true,cancelable:true}));
+      }
+    }
+  });
+
+  renderAtlas();
+  startDetailedMap();
+  loadExtraEntities().then(() => {
+    renderAtlas();
+  });
+})();
