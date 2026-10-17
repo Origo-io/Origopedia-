@@ -16,7 +16,7 @@
     const menuToggle = document.getElementById("op-article-menu-toggle");
     const articleContent = document.getElementById("op-article-content");
     if (!search || !category || !grid) { console.warn("Origopedia: HTML pustaka belum dipasang."); return; }
-    const names = {"world-history":"Sejarah Dunia", indonesia:"Sejarah Indonesia", economics:"Ekonomi", "dark-history":"Dark History"};
+    const names = {"world-history":"Sejarah Dunia", indonesia:"Sejarah Indonesia", economics:"Sejarah Ekonomi", "dark-history":"Dark History"};
     const el = (tag, cls, txt) => { const n = document.createElement(tag); if (cls) n.className = cls; if (txt != null) n.textContent = txt; return n; };
     function openArticle(a) {
       if (!dialog || !title || !body) return;
@@ -38,16 +38,29 @@
       if (count) count.textContent = filtered.length + " artikel"; if (empty) empty.hidden = filtered.length > 0;
     }
     search.addEventListener("input", render); category.addEventListener("change", render);
-    if (menuToggle && articleContent) menuToggle.addEventListener("click", () => {
-      const expanded = menuToggle.getAttribute("aria-expanded") === "true";
-      menuToggle.setAttribute("aria-expanded", String(!expanded));
-      articleContent.hidden = expanded;
-      menuToggle.querySelector("span:last-child").textContent = expanded ? "Tampilkan artikel" : "Daftar artikel";
-    });
+    function setMenuExpanded(expanded) {
+      if (!menuToggle || !articleContent) return;
+      menuToggle.setAttribute("aria-expanded", String(expanded));
+      articleContent.hidden = !expanded;
+      const label = menuToggle.querySelector("span:last-child");
+      if (label) label.textContent = expanded ? "Sembunyikan daftar" : "Daftar artikel";
+      menuToggle.setAttribute("aria-label", expanded ? "Sembunyikan daftar artikel" : "Buka daftar artikel");
+    }
+    if (menuToggle && articleContent) {
+      // Explicit initial state avoids a stale browser layout showing the list on load.
+      setMenuExpanded(menuToggle.getAttribute("aria-expanded") === "true" && !articleContent.hidden);
+      menuToggle.addEventListener("click", event => {
+        event.preventDefault();
+        const expanded = menuToggle.getAttribute("aria-expanded") === "true";
+        setMenuExpanded(!expanded);
+      });
+      // Other controls (search/navigation) can open the library without simulating a click.
+      window.openOrigopediaArticleMenu = () => setMenuExpanded(true);
+    }
     if (close && dialog) close.addEventListener("click", () => dialog.close ? dialog.close() : dialog.removeAttribute("open"));
     if (dialog) dialog.addEventListener("click", e => { if (e.target === dialog && dialog.close) dialog.close(); });
     render();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();
-    
+  
