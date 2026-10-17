@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="article-library.css" />
   <link rel="stylesheet" href="quiz.css" />
+  <link rel="stylesheet" href="historical-atlas.css" />
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -21,7 +22,7 @@
     <nav class="main-nav" id="mainNav">
       <a href="#explore">Jelajahi</a>
       <a href="#timeline">Timeline</a>
-      <a href="#map-section">Peta Sejarah</a>
+      <a href="#historical-atlas">Peta Sejarah</a>
       <a href="#op-quiz">Kuis</a>
       <a href="#dark-history">Dark History</a>
     </nav>
@@ -243,6 +244,65 @@
       </div>
     </section>
 
+    <section class="section historical-atlas-section" id="historical-atlas">
+      <div class="section-heading atlas-heading">
+        <div>
+          <p class="section-kicker">ATLAS SEJARAH INTERAKTIF</p>
+          <h2>Jelajahi dunia dari abad ke abad.</h2>
+          <p class="section-description">Pilih abad ke-1 sampai ke-21 untuk melihat contoh kerajaan, kekaisaran, dinasti, dan negara pada periode tersebut.</p>
+        </div>
+        <span class="map-tag"><span class="live-dot"></span> TIMELINE 1–21</span>
+      </div>
+
+      <div class="atlas-shell">
+        <div class="atlas-controls">
+          <button type="button" class="atlas-step" id="atlasPrev" aria-label="Abad sebelumnya">←</button>
+          <div class="atlas-century-label">
+            <span>PERIODE TERPILIH</span>
+            <strong id="atlasCenturyTitle">Abad ke-12</strong>
+            <small id="atlasYearRange">1101–1200 M</small>
+          </div>
+          <button type="button" class="atlas-step" id="atlasNext" aria-label="Abad berikutnya">→</button>
+        </div>
+        <div class="atlas-slider-wrap">
+          <label for="atlasCenturyRange">Geser untuk memilih abad</label>
+          <input id="atlasCenturyRange" type="range" min="1" max="21" step="1" value="12" />
+          <div class="atlas-slider-labels"><span>Abad 1</span><span>Abad 11</span><span>Abad 21</span></div>
+        </div>
+
+        <div class="atlas-map-card">
+          <div class="atlas-map-topline"><span>🌍 PETA DUNIA SKEMATIS</span><span id="atlasEntityCount">Memuat data…</span></div>
+          <div class="atlas-map-canvas" id="atlasMapCanvas">
+            <svg class="atlas-world-svg" viewBox="0 0 1000 500" role="img" aria-label="Ilustrasi skematis benua-benua dunia">
+              <path class="atlas-continent" d="M75 105 L120 62 190 48 246 72 274 112 242 146 210 158 190 199 153 207 126 177 91 159Z" />
+              <path class="atlas-continent" d="M220 224 L260 236 282 282 269 333 246 390 222 365 210 319 190 273Z" />
+              <path class="atlas-continent" d="M420 103 L450 82 480 94 497 119 478 140 450 133 433 151 411 133Z" />
+              <path class="atlas-continent" d="M437 153 L482 143 521 171 524 224 501 274 474 328 450 301 431 253 418 201Z" />
+              <path class="atlas-continent" d="M493 91 L557 60 635 68 690 91 738 104 793 142 771 172 718 169 682 196 645 181 612 197 574 166 536 157 510 132Z" />
+              <path class="atlas-continent" d="M622 204 L656 206 685 239 672 279 647 307 626 273 612 235Z" />
+              <path class="atlas-continent" d="M760 328 L810 309 858 331 849 363 800 375 767 356Z" />
+              <path class="atlas-continent" d="M838 113 L865 102 886 122 877 146 851 150 833 132Z" />
+              <g class="atlas-map-graticule"><path d="M40 125 H960 M40 205 H960 M40 285 H960 M40 365 H960 M250 35 V460 M420 35 V460 M590 35 V460 M760 35 V460" /></g>
+            </svg>
+            <div class="atlas-map-markers" id="atlasMapMarkers"></div>
+          </div>
+          <p class="atlas-map-note">Catatan: marker menunjukkan lokasi perkiraan pusat/wilayah utama, bukan garis batas wilayah yang akurat. Batas politik historis berubah-ubah dan akan ditambahkan setelah data poligon yang dapat diverifikasi tersedia.</p>
+        </div>
+
+        <div class="atlas-results-heading">
+          <div><h3 id="atlasListTitle">Kerajaan dan negara pada abad ke-12</h3><p>Pilih kartu untuk melihat ringkasan dan artikel terkait.</p></div>
+          <span id="atlasResultsCount" class="result-count">0 entitas</span>
+        </div>
+        <div class="atlas-entity-grid" id="atlasEntityGrid" aria-live="polite"></div>
+        <p class="atlas-empty" id="atlasEmpty" hidden>Data untuk abad ini belum tersedia. Pilih abad lain atau tambahkan data periode ini.</p>
+        <aside class="atlas-detail" id="atlasDetail" aria-live="polite">
+          <span class="atlas-detail-kicker">PILIH ENTITAS SEJARAH</span>
+          <h3>Temukan kerajaan, dinasti, dan negara</h3>
+          <p>Pilih salah satu kartu atau marker pada peta untuk membaca ringkasan periode dan wilayahnya.</p>
+        </aside>
+      </div>
+    </section>
+
     <section class="dark-history-section" id="dark-history">
       <div class="dark-visual">
         <div class="dark-grid"></div>
@@ -294,5 +354,6 @@
   <script src="articles.js"></script>
   <script src="article-library.js"></script>
   <script src="quiz.js"></script>
+  <script src="historical-atlas.js"></script>
 </body>
 </html>
