@@ -1,0 +1,67 @@
+/* Origopedia patch v2: latar laut biru dan tampilan Coming Soon abad 21 */
+.atlas-map-canvas {
+  background: linear-gradient(145deg, #0c5f91 0%, #087eaf 42%, #04395f 100%) !important;
+}
+.atlas-map-canvas .leaflet-container {
+  background: #087eaf !important;
+}
+.atlas-map-canvas .leaflet-tile-pane {
+  /* Menjaga tampilan basemap terang; warna laut berasal dari tile Voyager. */
+  filter: none !important;
+}
+.atlas-coming-soon-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background:
+    radial-gradient(ellipse at 18% 15%, rgba(56, 189, 248, .32), transparent 42%),
+    linear-gradient(135deg, rgba(4, 40, 75, .96), rgba(5, 91, 139, .94) 52%, rgba(2, 30, 57, .97));
+  color: #f2fbff;
+  text-align: center;
+}
+.atlas-coming-soon-overlay[hidden] { display: none !important; }
+.atlas-coming-soon-card {
+  width: min(100%, 500px);
+  padding: clamp(18px, 4vw, 32px);
+  border: 1px solid rgba(170, 232, 255, .4);
+  border-radius: 20px;
+  background: rgba(3, 30, 54, .6);
+  box-shadow: 0 18px 50px rgba(0, 12, 32, .3);
+  backdrop-filter: blur(8px);
+}
+.atlas-coming-soon-lock { font-size: clamp(1.8rem, 5vw, 2.8rem); margin-bottom: 8px; }
+.atlas-coming-soon-kicker {
+  margin: 0 0 8px;
+  color: #a6edff;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+.atlas-coming-soon-card h3 {
+  margin: 0 0 12px;
+  color: #fff;
+  font-size: clamp(1.5rem, 5vw, 2.4rem);
+  letter-spacing: .08em;
+}
+.atlas-coming-soon-card p:last-child {
+  margin: 0;
+  color: #d8f3ff;
+  line-height: 1.65;
+  font-size: .92rem;
+}
+.historical-atlas-section.atlas-is-coming-soon .atlas-results-heading,
+.historical-atlas-section.atlas-is-coming-soon #atlasEntityGrid,
+.historical-atlas-section.atlas-is-coming-soon #atlasEmpty,
+.historical-atlas-section.atlas-is-coming-soon #atlasDetail {
+  display: none !important;
+}
+.historical-atlas-section.atlas-is-coming-soon #atlasEntityCount {
+  color: #a6edff !important;
+}
+@media (max-width: 600px) {
+  .atlas-coming-soon-card { padding: 18px; }
+  .atlas-coming-soon-card p:last-child { font-size: .82rem; }
+}
