@@ -206,10 +206,25 @@ $("#searchForm").addEventListener("submit", event => {
   activeCategory = "all";
   $$(".filter-btn").forEach(button => button.classList.toggle("active", button.dataset.category === "all"));
   renderArticles();
-  $("#explore").scrollIntoView({ behavior: "smooth" });
+  const libraryCategory = $("#op-article-category");
+  if (libraryCategory) { libraryCategory.value = "all"; libraryCategory.dispatchEvent(new Event("change", { bubbles: true })); }
+  const librarySearch = $("#op-article-search");
+  if (librarySearch) {
+    librarySearch.value = $("#searchInput").value;
+    librarySearch.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+  if (typeof window.openOrigopediaArticleMenu === "function") window.openOrigopediaArticleMenu();
+  $("#explore").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
-$("#searchInput").addEventListener("input", renderArticles);
+$("#searchInput").addEventListener("input", () => {
+  renderArticles();
+  const librarySearch = $("#op-article-search");
+  if (librarySearch) {
+    librarySearch.value = $("#searchInput").value;
+    librarySearch.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+});
 $("#categoryFilters").addEventListener("click", event => {
   const button = event.target.closest("[data-category]");
   if (button) selectCategory(button.dataset.category);
@@ -220,7 +235,15 @@ $$(".search-chip").forEach(button => button.addEventListener("click", () => {
   activeCategory = "all";
   $$(".filter-btn").forEach(filter => filter.classList.toggle("active", filter.dataset.category === "all"));
   renderArticles();
-  $("#explore").scrollIntoView({ behavior: "smooth" });
+  const libraryCategory = $("#op-article-category");
+  if (libraryCategory) { libraryCategory.value = "all"; libraryCategory.dispatchEvent(new Event("change", { bubbles: true })); }
+  const librarySearch = $("#op-article-search");
+  if (librarySearch) {
+    librarySearch.value = $("#searchInput").value;
+    librarySearch.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+  if (typeof window.openOrigopediaArticleMenu === "function") window.openOrigopediaArticleMenu();
+  $("#explore").scrollIntoView({ behavior: "smooth", block: "start" });
 }));
 
 $("#articleGrid").addEventListener("click", event => {
@@ -233,8 +256,12 @@ $("#resetSearch").addEventListener("click", () => {
 });
 
 $("#darkHistoryBtn").addEventListener("click", () => {
-  selectCategory("dark");
-  $("#explore").scrollIntoView({ behavior: "smooth" });
+  const libraryCategory = $("#op-article-category");
+  const librarySearch = $("#op-article-search");
+  if (libraryCategory) { libraryCategory.value = "dark-history"; libraryCategory.dispatchEvent(new Event("change", { bubbles: true })); }
+  if (librarySearch) { librarySearch.value = ""; librarySearch.dispatchEvent(new Event("input", { bubbles: true })); }
+  if (typeof window.openOrigopediaArticleMenu === "function") window.openOrigopediaArticleMenu();
+  $("#explore").scrollIntoView({ behavior: "smooth", block: "start" });
   showToast("Koleksi Dark History ditampilkan.");
 });
 
