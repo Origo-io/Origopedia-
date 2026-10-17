@@ -81,4 +81,3 @@
 .atlas-leaflet-marker.active{background:#f4c96b;border-color:#fff6d8;transform:scale(1.16);box-shadow:0 0 0 7px rgba(244,201,107,.2),0 5px 18px rgba(0,0,0,.4)}
 .atlas-map-note{max-width:900px}
 @media(max-width:600px){.atlas-leaflet-map{min-height:320px}.atlas-map-canvas{min-height:320px}.atlas-map-canvas .leaflet-control-attribution{font-size:8px}}
-                 
