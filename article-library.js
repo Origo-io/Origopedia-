@@ -13,6 +13,8 @@
     const body = document.getElementById("op-article-dialog-body");
     const sources = document.getElementById("op-article-dialog-sources");
     const close = document.getElementById("op-article-dialog-close");
+    const menuToggle = document.getElementById("op-article-menu-toggle");
+    const articleContent = document.getElementById("op-article-content");
     if (!search || !category || !grid) { console.warn("Origopedia: HTML pustaka belum dipasang."); return; }
     const names = {"world-history":"Sejarah Dunia", indonesia:"Sejarah Indonesia", economics:"Ekonomi", "dark-history":"Dark History"};
     const el = (tag, cls, txt) => { const n = document.createElement(tag); if (cls) n.className = cls; if (txt != null) n.textContent = txt; return n; };
@@ -36,9 +38,16 @@
       if (count) count.textContent = filtered.length + " artikel"; if (empty) empty.hidden = filtered.length > 0;
     }
     search.addEventListener("input", render); category.addEventListener("change", render);
+    if (menuToggle && articleContent) menuToggle.addEventListener("click", () => {
+      const expanded = menuToggle.getAttribute("aria-expanded") === "true";
+      menuToggle.setAttribute("aria-expanded", String(!expanded));
+      articleContent.hidden = expanded;
+      menuToggle.querySelector("span:last-child").textContent = expanded ? "Tampilkan artikel" : "Daftar artikel";
+    });
     if (close && dialog) close.addEventListener("click", () => dialog.close ? dialog.close() : dialog.removeAttribute("open"));
     if (dialog) dialog.addEventListener("click", e => { if (e.target === dialog && dialog.close) dialog.close(); });
     render();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();
+    
