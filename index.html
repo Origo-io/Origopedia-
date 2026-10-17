@@ -21,7 +21,6 @@
     <button class="mobile-menu-btn icon-btn" id="mobileMenuBtn" aria-label="Buka navigasi" aria-expanded="false">☰</button>
     <nav class="main-nav" id="mainNav">
       <a href="#explore">Jelajahi</a>
-      <a href="#timeline">Timeline</a>
       <a href="#historical-atlas">Peta Sejarah</a>
       <a href="#op-quiz">Kuis</a>
       <a href="#dark-history">Dark History</a>
@@ -100,10 +99,10 @@
     <section class="section" id="op-article-library">
       <div class="section-heading">
         <p class="eyebrow">PERPUSTAKAAN</p>
-        <h2 class="op-library-heading">Artikel Tambahan Origopedia</h2>
-        <p class="op-library-intro">Jelajahi sejarah dunia, sejarah Indonesia, ekonomi, dan peristiwa penting yang membentuk kehidupan manusia.</p>
+        <div class="op-library-title-row"><div><h2 class="op-library-heading">Artikel Origopedia</h2><p class="op-library-intro">Pilih artikel untuk membaca ringkasan dan sumber lanjutannya.</p></div><button class="op-article-menu-toggle" id="op-article-menu-toggle" type="button" aria-expanded="true" aria-controls="op-article-content"><span aria-hidden="true">☰</span><span>Daftar artikel</span></button></div>
       </div>
 
+      <div id="op-article-content">
       <div class="op-article-controls">
         <input id="op-article-search" type="search" placeholder="Cari artikel..." aria-label="Cari artikel" />
         <select id="op-article-category" aria-label="Pilih kategori">
@@ -117,6 +116,7 @@
       <p id="op-article-count" aria-live="polite"></p>
       <div id="op-article-grid"></div>
       <p id="op-article-empty" hidden>Artikel tidak ditemukan. Coba kata kunci lain.</p>
+      </div>
 
       <dialog id="op-article-dialog" aria-labelledby="op-article-dialog-title">
         <button id="op-article-dialog-close" type="button" aria-label="Tutup artikel">Tutup</button>
@@ -183,64 +183,25 @@
       </div>
     </section>
 
-    <section class="timeline-section" id="timeline">
-      <div class="timeline-layout">
-        <div class="timeline-intro">
-          <p class="section-kicker">SEJARAH DALAM WAKTU</p>
-          <h2>Setiap zaman<br />meninggalkan jejak.</h2>
-          <p>Geser periode waktu dan pilih peristiwa untuk membaca ringkasan serta melihat keterkaitannya.</p>
-          <div class="timeline-controls">
-            <button class="round-btn" id="timelinePrev" aria-label="Peristiwa sebelumnya">←</button>
-            <button class="round-btn" id="timelineNext" aria-label="Peristiwa berikutnya">→</button>
-            <span id="timelinePosition">01 / 06</span>
-          </div>
-        </div>
-        <div class="timeline-explorer">
-          <div class="timeline-line"></div>
-          <div class="timeline-events" id="timelineEvents"></div>
-          <article class="timeline-detail" id="timelineDetail">
-            <span class="detail-label">PERISTIWA TERPILIH</span>
-            <h3>Pilih peristiwa pada garis waktu</h3>
-            <p>Ringkasan sejarah akan tampil di sini.</p>
-          </article>
-        </div>
-      </div>
-    </section>
 
-    <section class="section map-section" id="map-section">
+    <section class="section op-chapter2-section" id="op-quiz-chapter2">
       <div class="section-heading">
-        <div>
-          <p class="section-kicker">SEJARAH BERDASARKAN LOKASI</p>
-          <h2>Dunia adalah arsip.</h2>
-          <p class="section-description">Pilih titik lokasi untuk melihat kisah sejarah yang terhubung dengannya.</p>
-        </div>
-        <span class="map-tag"><span class="live-dot"></span> PETA DEMO</span>
+        <div><p class="section-kicker">CHALLENGE BERIKUTNYA</p><h2>Chapter 2: Peradaban Dunia</h2><p class="section-description">40 soal tentang peradaban, kerajaan, perdagangan, ilmu pengetahuan, dan sejarah Indonesia. Chapter 2 terbuka setelah Chapter 1 diselesaikan.</p></div>
+        <span class="result-count">40 soal</span>
       </div>
-      <div class="map-card">
-        <div class="map-illustration" id="mapIllustration">
-          <div class="map-grid"></div>
-          <svg class="world-shapes" viewBox="0 0 900 440" role="img" aria-label="Ilustrasi abstrak peta dunia">
-            <path d="M94 105 L139 65 194 72 218 102 203 128 165 143 151 180 123 174 112 143 80 133Z"/>
-            <path d="M194 191 L226 204 242 244 230 284 213 325 192 305 181 264 168 229Z"/>
-            <path d="M352 100 L390 80 425 94 438 117 418 133 387 126 371 148 343 132Z"/>
-            <path d="M386 150 L430 139 460 161 455 205 432 245 408 278 389 246 377 207 360 178Z"/>
-            <path d="M443 95 L490 72 552 78 584 101 623 105 661 133 647 157 602 161 577 181 548 166 520 180 488 155 459 141Z"/>
-            <path d="M539 184 L568 190 589 221 578 251 558 273 537 246 527 216Z"/>
-            <path d="M654 280 L694 268 730 286 722 311 681 322 653 304Z"/>
-            <path d="M713 105 L741 97 758 113 748 135 722 137 705 121Z"/>
-          </svg>
-          <div class="map-pins" id="mapPins"></div>
-          <div class="map-caption"><span class="map-caption-mark">◎</span><span><strong>Jelajahi peta sejarah</strong><small>Pilih penanda untuk membuka kisah</small></span></div>
+      <div class="op-ch2-lock" id="op-ch2-lock"><div class="op-ch2-lock-icon">🔒</div><div><h3>Chapter 2 terkunci</h3><p>Selesaikan seluruh 40 soal Chapter 1: Peradaban Romawi untuk membuka chapter ini.</p></div></div>
+      <div class="op-ch2-shell" id="op-ch2-shell" hidden>
+        <div class="op-quiz-card op-ch2-card">
+          <div id="op-ch2-body">
+            <div class="op-quiz-topline"><span id="op-ch2-progress-text">Soal 1 dari 40</span><div class="op-quiz-topline-stats"><span class="op-quiz-lives" id="op-ch2-lives" aria-label="3 nyawa tersisa">❤️ ❤️ ❤️</span><span class="op-quiz-xp">✦ <span id="op-ch2-score">0</span> XP</span></div></div>
+            <div class="op-quiz-progress-track"><div class="op-quiz-progress-bar" id="op-ch2-progress"></div></div>
+            <h3 id="op-ch2-question" tabindex="-1">Memuat pertanyaan…</h3><div class="op-quiz-options" id="op-ch2-options"></div>
+            <div class="op-quiz-feedback" id="op-ch2-feedback" role="status" aria-live="polite" hidden></div>
+            <div class="op-quiz-actions"><button class="op-quiz-primary" id="op-ch2-next" type="button" disabled>Lanjut →</button></div>
+          </div>
+          <div class="op-quiz-result" id="op-ch2-result" hidden><div class="op-quiz-result-icon">🌏</div><h3>Chapter 2 selesai!</h3><p id="op-ch2-result-message">Kamu menyelesaikan Peradaban Dunia.</p><div class="op-quiz-result-stats"><div class="op-quiz-result-stat"><strong id="op-ch2-result-score">0</strong><span>Total XP</span></div><div class="op-quiz-result-stat"><strong id="op-ch2-result-correct">0 dari 40</strong><span>Jawaban benar</span></div><div class="op-quiz-result-stat"><strong id="op-ch2-result-percent">0%</strong><span>Akurasi</span></div></div><button class="op-quiz-primary" id="op-ch2-restart" type="button">Ulangi chapter ↻</button></div>
         </div>
-        <aside class="map-info" id="mapInfo">
-          <div class="map-info-top"><span class="mini-label">LOKASI PILIHAN</span><span class="pin-number">01</span></div>
-          <h3>Pusat-pusat peradaban</h3>
-          <p>Peta ini adalah ilustrasi antarmuka. Lokasi dan data pada versi demo belum dimaksudkan sebagai peta geografis presisi.</p>
-          <div class="map-info-divider"></div>
-          <div class="map-stat"><span>Wilayah</span><strong id="mapRegion">Dunia</strong></div>
-          <div class="map-stat"><span>Periode</span><strong id="mapPeriod">Beragam zaman</strong></div>
-          <button class="button-primary full-width" id="mapReadMore">Jelajahi artikel <span>→</span></button>
-        </aside>
+        <aside class="op-quiz-side"><h3>🌐 Misi chapter</h3><p>Uji pengetahuanmu tentang sejarah lintas benua dan hubungan antarperadaban.</p><div class="op-quiz-stat"><span>Jumlah soal</span><strong>40</strong></div><div class="op-quiz-stat"><span>Nyawa awal</span><strong>❤️ 3</strong></div><div class="op-quiz-stat"><span>XP per jawaban benar</span><strong>10</strong></div><div class="op-quiz-stat"><span>Rekor XP kamu</span><strong id="op-ch2-best">0</strong></div><div class="op-quiz-note">Setiap jawaban benar mendapat 10 XP. Jawaban salah mengurangi satu nyawa. Jika nyawa habis, ulangi chapter dari awal.</div></aside>
       </div>
     </section>
 
@@ -251,7 +212,7 @@
           <h2>Jelajahi dunia dari abad ke abad.</h2>
           <p class="section-description">Pilih abad ke-1 sampai ke-21 untuk melihat contoh kerajaan, kekaisaran, dinasti, dan negara pada periode tersebut.</p>
         </div>
-        <span class="map-tag"><span class="live-dot"></span> TIMELINE 1–21</span>
+        <span class="map-tag"><span class="live-dot"></span> ABAD 1–21</span>
       </div>
 
       <div class="atlas-shell">
@@ -332,7 +293,7 @@
       <div class="business-features">
         <div class="business-feature"><span class="feature-icon">⌘</span><div><strong>Historical API</strong><p>Integrasikan data sejarah ke produk digital.</p></div><span class="feature-arrow">↗</span></div>
         <div class="business-feature"><span class="feature-icon">▤</span><div><strong>Modul pembelajaran</strong><p>Materi terstruktur untuk kelas dan LMS.</p></div><span class="feature-arrow">↗</span></div>
-        <div class="business-feature"><span class="feature-icon">◷</span><div><strong>Timeline & peta</strong><p>Visualisasi untuk situs dan pameran digital.</p></div><span class="feature-arrow">↗</span></div>
+        <div class="business-feature"><span class="feature-icon">◷</span><div><strong>Atlas sejarah</strong><p>Visualisasi untuk situs dan pameran digital.</p></div><span class="feature-arrow">↗</span></div>
         <p class="business-note">Konsep layanan institusi — integrasi API belum aktif di versi demo.</p>
       </div>
     </section>
@@ -354,6 +315,7 @@
   <script src="articles.js"></script>
   <script src="article-library.js"></script>
   <script src="quiz.js"></script>
+  <script src="quiz-chapter2.js"></script>
   <script src="historical-atlas.js"></script>
 </body>
 </html>
