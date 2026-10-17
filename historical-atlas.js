@@ -42,12 +42,60 @@
     {id:"brazil",name:"Brasil",type:"Negara modern",region:"Amerika Selatan",start:19,end:21,x:29,y:61,description:"Brasil merdeka dari Portugal pada 1822 dan menjadi republik pada 1889."},
     {id:"australia",name:"Australia",type:"Negara modern",region:"Oseania",start:20,end:21,x:84,y:69,description:"Persemakmuran Australia dibentuk pada 1901. Sejarah benua ini jauh lebih panjang dan mencakup masyarakat Aborigin serta Penduduk Kepulauan Selat Torres."}
   ];
-
+  // Koordinat pusat/kawasan perkiraan untuk marker. Ini bukan batas wilayah historis.
+  const coordinates = {
+    "rome":[41.9,12.5],"han":[34.0,108.0],"parthia":[32.0,53.0],"kushan":[34.0,69.0],
+    "aksum":[14.1,38.7],"maya":[17.0,-90.0],"byzantine":[41.0,29.0],"gupta":[25.0,80.0],
+    "sui-tang":[34.0,108.0],"srivijaya":[-2.0,104.0],"umayyad":[33.5,36.3],"abbasid":[33.3,44.4],
+    "carolingian":[49.0,6.0],"ghana":[13.0,-3.0],"khmer":[13.4,103.9],"song":[34.0,112.0],
+    "seljuk":[38.0,45.0],"fatimid":[30.0,31.2],"japan-heian":[35.0,135.0],"mali":[17.0,-4.0],
+    "mongol":[47.0,103.0],"majapahit":[-7.5,112.5],"aztec":[19.4,-99.1],"inca":[-13.5,-72.0],
+    "ming":[35.0,116.0],"ottoman":[41.0,29.0],"mughal":[27.0,77.0],"safavid":[32.0,53.0],
+    "qing":[39.0,116.0],"british-empire":[51.5,-0.1],"usa":[39.0,-98.0],"haiti":[19.0,-72.3],
+    "indonesia":[-2.0,118.0],"india":[22.0,79.0],"china":[35.0,105.0],"nigeria":[9.0,8.0],
+    "brazil":[-10.0,-55.0],"australia":[-25.0,134.0]
+  };
   const $ = id => document.getElementById(id);
   const range = $("atlasCenturyRange");
   if (!range || !$("atlasEntityGrid")) return;
   let selectedCentury = 12;
   let selectedEntity = null;
+  let leafletMap = null;
+  let leafletMarkers = [];
+
+  function initDetailedMap() {
+    const mapElement = $("atlasLeafletMap");
+    if (!mapElement || !window.L || typeof window.L.map !== "function") return false;
+    try {
+      mapElement.hidden = false;
+      const svg = document.querySelector(".atlas-world-svg");
+      const fallbackMarkers = $("atlasMapMarkers");
+      if (svg) svg.hidden = true;
+      if (fallbackMarkers) fallbackMarkers.hidden = true;
+      leafletMap = window.L.map(mapElement, {
+        worldCopyJump: true,
+        scrollWheelZoom: false,
+        minZoom: 2,
+        maxZoom: 7,
+        zoomControl: true
+      }).setView([18, 8], 2);
+      window.L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+        subdomains: "abcd",
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener noreferrer">CARTO</a>'
+      }).addTo(leafletMap);
+      return true;
+    } catch (error) {
+      console.warn("Origopedia: peta rinci gagal dimuat, memakai peta ilustrasi.", error);
+      mapElement.hidden = true;
+      const svg = document.querySelector(".atlas-world-svg");
+      const fallbackMarkers = $("atlasMapMarkers");
+      if (svg) svg.hidden = false;
+      if (fallbackMarkers) fallbackMarkers.hidden = false;
+      return false;
+    }
+  }
+  const hasDetailedMap = initDetailedMap();
 
   const centuryYearRange = century => {
     if (century === 21) return "2001鈥�2100 M";
@@ -78,9 +126,31 @@
         <small>Perkiraan periode: abad ${item.start}鈥�${item.end}</small>
       </button>
     `).join("");
-    $("atlasMapMarkers").innerHTML = items.map((item, index) => `
-      <button type="button" class="atlas-marker ${selectedEntity && selectedEntity.id === item.id ? "active" : ""}" style="left:${item.x}%;top:${item.y}%" data-atlas-entity="${item.id}" aria-label="Pilih ${item.name}" title="${item.name}"><span>${index + 1}</span></button>
-    `).join("");
+    if (hasDetailedMap && leafletMap) {
+      leafletMarkers.forEach(marker => marker.remove());
+      leafletMarkers = items.map((item, index) => {
+        const point = coordinates[item.id];
+        if (!point) return null;
+        const icon = window.L.divIcon({
+          className: "atlas-leaflet-icon",
+          html: `<span class="atlas-leaflet-marker ${selectedEntity && selectedEntity.id === item.id ? "active" : ""}">${index + 1}</span>`,
+          iconSize: [30, 30],
+          iconAnchor: [15, 15]
+        });
+        const marker = window.L.marker(point, { icon, title: item.name, keyboard: true }).addTo(leafletMap);
+        marker.bindTooltip(item.name, { direction: "top", offset: [0, -12] });
+        marker.on("click", () => {
+          renderDetail(item);
+          const card = document.querySelector(`.atlas-entity-card[data-atlas-entity="${item.id}"]`);
+          if (card) card.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        });
+        return marker;
+      }).filter(Boolean);
+    } else {
+      $("atlasMapMarkers").innerHTML = items.map((item, index) => `
+        <button type="button" class="atlas-marker ${selectedEntity && selectedEntity.id === item.id ? "active" : ""}" style="left:${item.x}%;top:${item.y}%" data-atlas-entity="${item.id}" aria-label="Pilih ${item.name}" title="${item.name}"><span>${index + 1}</span></button>
+      `).join("");
+    }
     if (selectedEntity && !items.some(item => item.id === selectedEntity.id)) selectedEntity = null;
     if (!selectedEntity && items.length) selectedEntity = items[0];
     if (selectedEntity) renderDetail(selectedEntity);
@@ -109,6 +179,17 @@
       node.classList.toggle("active", active);
       if (node.classList.contains("atlas-marker")) node.setAttribute("aria-pressed", String(active));
     });
+    if (hasDetailedMap && leafletMap) {
+      leafletMarkers.forEach((marker, index) => {
+        const item = getEntitiesForCentury(selectedCentury)[index];
+        if (!item) return;
+        marker.setIcon(window.L.divIcon({
+          className: "atlas-leaflet-icon",
+          html: `<span class="atlas-leaflet-marker ${item.id === id ? "active" : ""}">${index + 1}</span>`,
+          iconSize: [30, 30], iconAnchor: [15, 15]
+        }));
+      });
+    }
   }
 
   $("atlasPrev").addEventListener("click", () => { range.value = String(Math.max(1, Number(range.value) - 1)); renderAtlas(); });
@@ -149,3 +230,4 @@
 
   renderAtlas();
 })();
+     
