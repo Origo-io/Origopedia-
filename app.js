@@ -232,37 +232,6 @@ $("#resetSearch").addEventListener("click", () => {
   selectCategory("all");
 });
 
-$("#timelineEvents").addEventListener("click", event => {
-  const button = event.target.closest("[data-timeline]");
-  if (!button) return;
-  currentTimelineIndex = Number(button.dataset.timeline);
-  renderTimeline();
-});
-$("#timelineDetail").addEventListener("click", event => {
-  const button = event.target.closest("[data-timeline-article]");
-  if (!button) return;
-  openArticle(button.dataset.timelineArticle);
-});
-$("#timelinePrev").addEventListener("click", () => {
-  currentTimelineIndex = (currentTimelineIndex - 1 + timelineData.length) % timelineData.length;
-  renderTimeline();
-});
-$("#timelineNext").addEventListener("click", () => {
-  currentTimelineIndex = (currentTimelineIndex + 1) % timelineData.length;
-  renderTimeline();
-});
-
-$("#mapPins").addEventListener("click", event => {
-  const button = event.target.closest("[data-location]");
-  if (!button) return;
-  currentMapLocation = mapLocations.find(location => location.id === button.dataset.location) || mapLocations[0];
-  renderMapPins();
-});
-$("#mapReadMore").addEventListener("click", event => {
-  const articleId = event.currentTarget.dataset.article;
-  if (articleId) openArticle(articleId);
-  else showToast("Artikel untuk lokasi ini akan segera ditambahkan.");
-});
 $("#darkHistoryBtn").addEventListener("click", () => {
   selectCategory("dark");
   $("#explore").scrollIntoView({ behavior: "smooth" });
@@ -298,5 +267,3 @@ $("#backToTop").addEventListener("click", event => {
 });
 
 renderArticles();
-renderTimeline();
-renderMapPins();
